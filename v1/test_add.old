@@ -1,0 +1,51 @@
+import unittest
+import StringCalculator
+
+class TestCalculator(unittest.TestCase):
+    # First Test - Simple string containing only numbers
+    def test_add(self):
+        # Tests function with no parameters
+        self.assertEqual(StringCalculator.Add(), 0)
+
+        # Tests function with invalid parameter
+        self.assertEqual(StringCalculator.Add("       "), 0)
+
+        with self.assertRaises(ValueError) as noNumbers:
+            StringCalculator.Add("^,%,&,,$$,!@,a,g,t%,  ,   , ")
+        self.assertEqual("You haven't entered any valid numbers.", str(noNumbers.exception))
+        
+
+        # Tests simple strings of valid numbers
+        self.assertEqual(StringCalculator.Add("1,2,3,4,5,6"), 21)
+        self.assertEqual(StringCalculator.Add("35,2,124,578,622,412,3"), 1776)
+        self.assertEqual(StringCalculator.Add("21,24,23,24,18,365,1,45,2,854,36,27,58,69,24,74,85"), 1750)
+        
+        # Tests simple string with numbers over 1000 which will be ignored
+        self.assertEqual(StringCalculator.Add("1,2,3,4,5,6,1024,10,2754,96854,2,3,4"), 40)
+        self.assertEqual(StringCalculator.Add("1,1024,3,5427,5,1247"), 9)
+
+        # Tests strings of valid numbers with the addition of the new line command
+        self.assertEqual(StringCalculator.Add("7,\n5,2"), 14)
+        self.assertEqual(StringCalculator.Add("8\n,14,587"), 609)
+        self.assertEqual(StringCalculator.Add("654,13,865\n,\n578"), 2110)
+
+        # Tests with negative numbers, throws exception and list negative numbers
+        with self.assertRaises(ValueError) as negativeError:
+            StringCalculator.Add("1,2,3\n4,-6")
+        self.assertEqual("Negative numbers are not allowed. -6", str(negativeError.exception))
+        with self.assertRaises(ValueError) as negativeError:
+            StringCalculator.Add("-58,58,-7\n4,-6")
+        self.assertEqual("Negative numbers are not allowed. -58, -74, -6", str(negativeError.exception))
+
+        # Tests strings with custom delimiters
+            # Single custom delimiter
+        self.assertEqual(StringCalculator_V2.Add("//#\n54#8#765#54#224"), 1105)
+
+            # Multiple Delimiters
+        self.assertEqual(StringCalculator_V2.Add("//#,@\n1#2@3#5@8"), 19)
+        
+
+        #Tests
+
+if __name__ == "__main__":
+    unittest.main()
